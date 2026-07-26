@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angel Quintero | Cloud & DevOps Engineer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js Para fondo 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a', // Deeper black
+                            800: '#121212', // Slightly lighter
+                            700: '#1e1e1e', // Card background
+                        },
+                        accent: {
+                            primary: '#3b82f6', // Blue
+                            secondary: '#8b5cf6', // Purple
+                            tertiary: '#10b981', // Emerald
+                            aws: '#ff9900',
+                            terraform: '#844fba'
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="antialiased font-sans selection:bg-accent-primary selection:text-white">
+
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="font-mono text-xl font-bold text-white tracking-tighter group flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white shadow-lg shadow-accent-primary/20 group-hover:rotate-12 transition-transform">
+                            <i class="fa-solid fa-terminal text-sm"></i>
+                        </div>
+                        <span>Angel<span class="text-accent-primary">.dev</span></span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                        Perfil
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#skills" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                        Skills
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#experience" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                        Experiencia
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="assets/files/CV_Angel_Quintero_DevOps.pdf" target="_blank" class="px-5 py-2.5 rounded-lg bg-white/5 text-white border border-white/10 hover:bg-accent-primary hover:border-accent-primary hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 text-sm font-medium flex items-center gap-2 group">
+                        <span>Descargar CV</span>
+                        <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                        <div class="space-y-1.5">
+                            <span class="block w-6 h-0.5 bg-current transition-transform duration-300"></span>
+                            <span class="block w-6 h-0.5 bg-current transition-opacity duration-300"></span>
+                            <span class="block w-4 h-0.5 bg-current transition-all duration-300 ml-auto"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-xl border-b border-white/10 absolute w-full shadow-2xl origin-top transition-all">
+            <div class="px-4 pt-4 pb-8 space-y-4">
+                <a href="#about" class="block px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Perfil</a>
+                <a href="#skills" class="block px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Skills</a>
+                <a href="#experience" class="block px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Experiencia</a>
+                <div class="pt-4 border-t border-white/10">
+                    <a href="assets/files/pdf/CV_Angel_Quintero_DevOps.pdf" class="block w-full px-4 py-3 text-center rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-medium shadow-lg">
+                        Descargar Curriculum
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 min-h-screen flex items-center overflow-hidden">
+        <!-- 3D Canvas Background -->
+        <div id="canvas-container"></div>
+        
+        <!-- Decorative Ambient Blobs -->
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-accent-secondary/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-accent-primary/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-accent-tertiary/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Text Content -->
+                <div class="lg:col-span-7 space-y-8 reveal-left">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                        <span class="text-sm font-medium text-gray-300">Disponible para reubicación / Híbrido</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
+                            Construyendo <br>
+                            <span class="text-gradient">Infraestructura</span> <br>
+                            para el futuro.
+                        </h1>
+                        <h2 class="text-xl sm:text-2xl font-mono text-gray-400 flex items-center gap-2">
+                            <span class="text-accent-primary">const</span> role = <span class="text-accent-tertiary">"DevOps Engineer"</span>;
+                        </h2>
+                    </div>
+
+                    <p class="text-lg text-gray-400 max-w-2xl leading-relaxed font-light">
+                        Hola, soy <strong class="text-white font-medium">Angel Quintero</strong>. Especializado en transformar operaciones manuales en ecosistemas cloud ágiles, seguros y escalables mediante código y automatización extrema en AWS.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-5 pt-4">
+                        <a href="mailto:devangelqc@gmail.com?subject=Hola%20Angel,%20vi%20tu%20portafolio" class="px-8 py-4 rounded-xl bg-white text-dark-900 font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            Iniciar Proyecto <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                        <a href="https://github.com/devangels29" target="_blank" class="px-8 py-4 rounded-xl bg-white/5 text-white font-medium border border-white/10 hover:bg-white/10 transition-colors flex items-center gap-2 backdrop-blur-md">
+                            <i class="fa-brands fa-github text-xl"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Visual/Interactive Element -->
+                <div class="lg:col-span-5 relative hidden lg:block reveal-right">
+                    <!-- Interactive Tech Sphere Placeholder -->
+                    <div class="relative w-full aspect-square flex items-center justify-center">
+                        <!-- Orbit Rings -->
+                        <div class="absolute inset-0 border border-white/5 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                        <div class="absolute inset-8 border border-white/10 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                        <div class="absolute inset-16 border border-white/5 rounded-full border-dashed animate-[spin_25s_linear_infinite]"></div>
+                        
+                        <!-- Center Image/Avatar (Replace src with your image) -->
+                        <div class="relative z-10 w-48 h-48 rounded-full border-2 border-accent-primary/50 p-2 shadow-[0_0_30px_rgba(59,130,246,0.3)] animate-float overflow-hidden bg-dark-800">
+                             <!-- PLACEHOLDER FOR YOUR PHOTO -->
+                             <img src="assets/images/devangel.png" alt="Angel Quintero" class="w-full h-full object-cover rounded-full">
+                        </div>
+
+                        <!-- Floating Tech Icons -->
+                        <div class="absolute top-[10%] right-[20%] w-14 h-14 bg-dark-800 rounded-xl border border-white/10 flex items-center justify-center shadow-lg animate-float" style="animation-delay: -1s;">
+                            <i class="fa-brands fa-aws text-2xl text-accent-aws"></i>
+                        </div>
+                        <div class="absolute bottom-[20%] left-[10%] w-16 h-16 bg-dark-800 rounded-xl border border-white/10 flex items-center justify-center shadow-lg animate-float" style="animation-delay: -2s;">
+                            <i class="fa-solid fa-code text-2xl text-accent-terraform"></i>
+                        </div>
+                        <div class="absolute top-[40%] -left-[5%] w-12 h-12 bg-dark-800 rounded-xl border border-white/10 flex items-center justify-center shadow-lg animate-float" style="animation-delay: -3s;">
+                            <i class="fa-brands fa-docker text-xl text-blue-500"></i>
+                        </div>
+                        
+                        <!-- Stats floating card -->
+                        <div class="absolute -bottom-4 right-0 bg-white/5 backdrop-blur-xl border border-white/10 p-4 rounded-2xl animate-float" style="animation-delay: -1.5s;">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-accent-tertiary/20 flex items-center justify-center text-accent-tertiary">
+                                    <i class="fa-solid fa-chart-line text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider font-mono">Infraestructura</p>
+                                    <p class="text-white font-bold">100% como Código</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity animate-bounce cursor-pointer" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                <span class="text-xs text-gray-400 tracking-widest uppercase">Scroll</span>
+                <i class="fa-solid fa-arrow-down text-white"></i>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 relative bg-dark-900 z-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Left: Visual/Image Grid -->
+                <div class="relative reveal-scale order-2 lg:order-1">
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Replace src with actual images related to your work (e.g., code snippets, architectures, setup) -->
+                        <div class="space-y-4 pt-8">
+                            <div class="rounded-2xl overflow-hidden border border-white/10 relative group h-48">
+                                <img src="https://placehold.co/600x400/1e1e1e/3b82f6?text=Infrastructure+Diagram" alt="Architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent opacity-60"></div>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden border border-white/10 relative group h-64">
+                                <img src="https://placehold.co/600x600/1e1e1e/8b5cf6?text=Terminal+Setup" alt="Code" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent opacity-60"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="rounded-2xl bg-gradient-to-br from-dark-800 to-dark-700 border border-white/10 p-6 flex flex-col justify-center h-48 relative overflow-hidden group">
+                                <i class="fa-solid fa-quote-left text-4xl text-white/5 absolute top-4 left-4"></i>
+                                <h3 class="text-3xl font-bold text-white mb-1">3+</h3>
+                                <p class="text-sm text-gray-400">Años de experiencia especializada en DevOps.</p>
+                                <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-accent-primary to-accent-secondary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden border border-white/10 relative group h-64">
+                                <img src="https://placehold.co/600x800/1e1e1e/10b981?text=AWS+Console" alt="AWS" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent opacity-60"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative blur -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent-primary/20 rounded-full blur-[80px] -z-10"></div>
+                </div>
+
+                <!-- Right: Text Content -->
+                <div class="reveal-up order-1 lg:order-2">
+                    <div class="inline-flex items-center gap-2 mb-6 text-accent-primary font-mono text-sm uppercase tracking-wider">
+                        <span class="w-8 h-[1px] bg-accent-primary"></span>
+                        Sobre mí
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
+                        Arquitecto de <span class="text-gradient">Soluciones Cloud</span>.
+                    </h2>
+                    
+                    <div class="space-y-6 text-gray-400 text-lg font-light leading-relaxed">
+                        <p>
+                            Mi enfoque principal es diseñar puentes robustos entre el desarrollo y las operaciones. Como Ingeniero DevOps, poseo una experiencia sólida en la orquestación y optimización de infraestructura cloud, principalmente dentro del ecosistema <strong class="text-white">AWS</strong>.
+                        </p>
+                        <p>
+                            Me apasiona la <strong class="text-accent-secondary">Infraestructura como Código (IaC)</strong>. Utilizo Terraform rigurosamente bajo las mejores prácticas: modularización estricta, control de versiones semántico y gestión de estados remotos seguros.
+                        </p>
+                        <div class="pl-6 border-l-2 border-accent-tertiary bg-white/5 py-4 pr-4 rounded-r-xl">
+                            <p class="text-gray-300 italic text-base">
+                                "Mi objetivo no es solo mantener sistemas funcionando, sino construir culturas proactivas de CI/CD que garanticen entregas continuas, alta disponibilidad y seguridad integral desde el diseño inicial."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex flex-col sm:flex-row items-center gap-6 text-sm text-gray-300 font-mono bg-dark-800/50 p-4 rounded-xl border border-white/5">
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-accent-primary">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-xs">Ubicación</p>
+                                <p>Quito / Guayaquil, EC</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block w-[1px] h-10 bg-white/10"></div>
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-accent-tertiary">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-xs">Teléfono</p>
+                                <p>+593 98 759 0938</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-24 bg-dark-800 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <div class="inline-flex items-center gap-2 mb-4 text-accent-secondary font-mono text-sm uppercase tracking-wider">
+                    <span class="w-8 h-[1px] bg-accent-secondary"></span>
+                    Arsenal Técnico
+                    <span class="w-8 h-[1px] bg-accent-secondary"></span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-white">
+                    Herramientas & <span class="text-gradient">Tecnologías</span>
+                </h2>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto font-light">Ecosistema tecnológico que utilizo a diario para construir, desplegar y monitorear arquitecturas resilientes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Cloud & AWS -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-accent-aws/10 rounded-xl flex items-center justify-center border border-accent-aws/20">
+                            <i class="fa-brands fa-aws text-3xl text-accent-aws"></i>
+                        </div>
+                        <span class="text-xs font-mono text-gray-500 bg-dark-900 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">AWS Cloud Services</h3>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">ECS & Fargate</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">IAM & Security</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">VPC & Transit Gateway</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">CloudWatch</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">Route 53</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IaC -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up" style="transition-delay: 100ms;">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-accent-terraform/10 rounded-xl flex items-center justify-center border border-accent-terraform/20">
+                            <i class="fa-solid fa-code text-2xl text-accent-terraform"></i>
+                        </div>
+                        <span class="text-xs font-mono text-gray-500 bg-dark-900 px-2 py-1 rounded">Expert</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Infraestructura as Code</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-400">Terraform (Módulos & Estado)</span>
+                                <span class="text-accent-terraform">95%</span>
+                            </div>
+                            <div class="w-full bg-dark-900 rounded-full h-1.5">
+                                <div class="bg-accent-terraform h-1.5 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-400">Automatización (Shell/Python)</span>
+                                <span class="text-accent-primary">85%</span>
+                            </div>
+                            <div class="w-full bg-dark-900 rounded-full h-1.5">
+                                <div class="bg-accent-primary h-1.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Containers -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up" style="transition-delay: 200ms;">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
+                            <i class="fa-brands fa-docker text-3xl text-blue-500"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Contenedores & SO</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-gray-400 text-sm">
+                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                            Construcción y optimización de Dockerfiles
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-400 text-sm">
+                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                            Orquestación con Amazon ECS
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-400 text-sm">
+                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                            Administración Linux (RedHat, Debian)
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CI/CD -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center border border-red-500/20">
+                            <i class="fa-solid fa-code-branch text-2xl text-red-500"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">CI/CD & Integración</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-dark-900 border border-white/5 p-3 rounded-lg text-center hover:border-red-500/50 transition-colors">
+                            <i class="fa-brands fa-jenkins text-2xl text-gray-300 mb-2"></i>
+                            <p class="text-xs text-gray-400">Jenkins</p>
+                        </div>
+                        <div class="bg-dark-900 border border-white/5 p-3 rounded-lg text-center hover:border-orange-500/50 transition-colors">
+                            <i class="fa-brands fa-gitlab text-2xl text-orange-500 mb-2"></i>
+                            <p class="text-xs text-gray-400">GitLab</p>
+                        </div>
+                        <div class="bg-dark-900 border border-white/5 p-3 rounded-lg text-center hover:border-blue-400/50 transition-colors">
+                            <i class="fa-brands fa-bitbucket text-2xl text-blue-400 mb-2"></i>
+                            <p class="text-xs text-gray-400">Bitbucket</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality & Management -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up" style="transition-delay: 100ms;">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-accent-tertiary/10 rounded-xl flex items-center justify-center border border-accent-tertiary/20">
+                            <i class="fa-solid fa-shield-check text-2xl text-accent-tertiary"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Calidad & Gestión</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-400 text-sm">
+                            <i class="fa-solid fa-check text-accent-tertiary mt-1"></i>
+                            <span>Integración de <strong>SonarQube</strong> en pipelines (Quality Gates).</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-400 text-sm">
+                            <i class="fa-solid fa-check text-accent-tertiary mt-1"></i>
+                            <span>Gestión ágil e incidentes con <strong>Jira</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-400 text-sm">
+                            <i class="fa-solid fa-check text-accent-tertiary mt-1"></i>
+                            <span>Estrategias de promoción entre ambientes (Dev, QA, Prod).</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Security & Network -->
+                <div class="interactive-card bg-dark-700/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 reveal-up" style="transition-delay: 200ms;">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-pink-500/10 rounded-xl flex items-center justify-center border border-pink-500/20">
+                            <i class="fa-solid fa-network-wired text-2xl text-pink-500"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Seguridad & Redes</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">IAM Hardening</span>
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">VPN IPsec</span>
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">Direct Connect</span>
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">Security Groups</span>
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">NACLs</span>
+                        <span class="px-3 py-1 bg-dark-900 border border-white/10 rounded-lg text-xs text-gray-300 font-mono">Least Privilege</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-24 relative bg-dark-900 z-10">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPjxjaXJjbGUgY3g9IjMiIGN5PSIzIiByPSIxIi8+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+        
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Trayectoria <span class="text-gradient">Profesional</span>
+                </h2>
+            </div>
+
+            <div class="relative border-l-2 border-white/10 ml-4 md:ml-0 md:absolute md:left-1/2 md:-translate-x-[1px] h-full hidden md:block"></div>
+
+            <div class="space-y-16">
+                
+                <!-- Job 1 -->
+                <div class="relative flex flex-col md:flex-row items-center md:justify-between group reveal-up">
+                    
+                    <!-- Timeline Dot (Mobile: Left, Desktop: Center) -->
+                    <div class="absolute left-[-21px] md:left-1/2 md:-translate-x-1/2 w-10 h-10 rounded-full bg-dark-800 border-4 border-dark-900 shadow-[0_0_0_2px_rgba(59,130,246,0.5)] flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-110">
+                        <div class="w-3 h-3 bg-accent-primary rounded-full animate-pulse"></div>
+                    </div>
+
+                    <!-- Content (Desktop: Right side) -->
+                    <div class="w-full md:w-[45%] md:ml-auto pl-8 md:pl-0">
+                        <div class="bg-dark-800 p-8 rounded-2xl border border-white/5 hover:border-accent-primary/50 transition-colors relative overflow-hidden">
+                            <!-- Background Accent -->
+                            <div class="absolute -right-10 -top-10 w-32 h-32 bg-accent-primary/10 rounded-full blur-2xl"></div>
+                            
+                            <div class="flex flex-wrap justify-between items-start gap-2 mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">Ingeniero DevOps / Especialista Cloud</h3>
+                                    <h4 class="text-lg text-accent-primary font-medium">Kruger Corporation</h4>
+                                </div>
+                                <span class="px-3 py-1 bg-accent-primary/10 text-accent-primary border border-accent-primary/20 rounded-full text-xs font-mono font-bold">2024 – Presente</span>
+                            </div>
+                            
+                            <ul class="space-y-3 text-gray-400 mb-6 text-sm leading-relaxed font-light">
+                                <li><strong>IaC:</strong> Diseño y mantenimiento de infraestructura escalable en AWS con Terraform (arquitecturas modulares, control de versiones, remote state).</li>
+                                <li><strong>Redes:</strong> Arquitectura de VPC, Subnets, Routing, SGs, NACLs, Transit Gateway y Route 53.</li>
+                                <li><strong>Contenedores:</strong> Orquestación y despliegue de microservicios en ambientes Dev/QA/Prod usando Docker sobre AWS ECS.</li>
+                                <li><strong>Seguridad:</strong> Hardening de IAM (políticas de mínimo privilegio) y optimización de costos.</li>
+                            </ul>
+                            
+                            <div class="bg-dark-900 rounded-xl p-5 border border-white/5 border-l-2 border-l-accent-tertiary">
+                                <h5 class="text-white font-semibold flex items-center gap-2 mb-3 text-sm uppercase tracking-wider">
+                                    <i class="fa-solid fa-rocket text-accent-tertiary"></i> Logros
+                                </h5>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="bg-dark-800 p-3 rounded-lg">
+                                        <span class="block text-2xl font-bold text-accent-tertiary mb-1">↓ 22%</span>
+                                        <span class="text-xs text-gray-500">Reducción en costos de AWS (reestructuración y ciclo de vida).</span>
+                                    </div>
+                                    <div class="bg-dark-800 p-3 rounded-lg">
+                                        <span class="block text-2xl font-bold text-accent-primary mb-1">↑ 40%</span>
+                                        <span class="text-xs text-gray-500">Aceleración en despliegues al migrar a blueprints de Terraform.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job 2 -->
+                <div class="relative flex flex-col md:flex-row items-center md:justify-between group reveal-up">
+                    
+                    <!-- Timeline Dot -->
+                    <div class="absolute left-[-21px] md:left-1/2 md:-translate-x-1/2 w-10 h-10 rounded-full bg-dark-800 border-4 border-dark-900 shadow-[0_0_0_2px_rgba(255,153,0,0.5)] flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-110">
+                        <div class="w-3 h-3 bg-accent-aws rounded-full"></div>
+                    </div>
+
+                    <!-- Content (Desktop: Left side) -->
+                    <div class="w-full md:w-[45%] md:mr-auto pl-8 md:pl-0 md:pr-8">
+                        <div class="bg-dark-800 p-8 rounded-2xl border border-white/5 hover:border-accent-aws/50 transition-colors relative overflow-hidden">
+                            <!-- Background Accent -->
+                            <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-accent-aws/10 rounded-full blur-2xl"></div>
+
+                            <div class="flex flex-wrap justify-between items-start gap-2 mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">Ingeniero de Automatización y CI/CD</h3>
+                                    <h4 class="text-lg text-accent-aws font-medium">Telconet</h4>
+                                </div>
+                                <span class="px-3 py-1 bg-white/5 text-gray-300 border border-white/10 rounded-full text-xs font-mono">2021 – 2024</span>
+                            </div>
+                            
+                            <ul class="space-y-3 text-gray-400 mb-6 text-sm leading-relaxed font-light">
+                                <li>Construcción y mantenimiento de pipelines automatizados CI/CD con <strong>Jenkins</strong> y gestión de repositorios (GitLab/Bitbucket).</li>
+                                <li>Integración de análisis estático (<strong>SonarQube</strong>) para mitigar vulnerabilidades y asegurar calidad.</li>
+                                <li>Monitoreo preventivo y observabilidad con <strong>AWS CloudWatch</strong> (logs centralizados, alarmas).</li>
+                                <li>Administración y tuning de servidores Linux (RedHat, Debian). Documentación técnica en Jira.</li>
+                            </ul>
+                            
+                            <div class="bg-dark-900 rounded-xl p-5 border border-white/5 border-l-2 border-l-accent-aws">
+                                <h5 class="text-white font-semibold flex items-center gap-2 mb-3 text-sm uppercase tracking-wider">
+                                    <i class="fa-solid fa-chart-pie text-accent-aws"></i> Logros
+                                </h5>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="bg-dark-800 p-3 rounded-lg">
+                                        <span class="block text-2xl font-bold text-accent-aws mb-1">↓ 35%</span>
+                                        <span class="text-xs text-gray-500">Mitigación de fallos integrando Quality Gates de SonarQube.</span>
+                                    </div>
+                                    <div class="bg-dark-800 p-3 rounded-lg">
+                                        <span class="block text-2xl font-bold text-accent-aws mb-1">↓ 50%</span>
+                                        <span class="text-xs text-gray-500">Disminución en el MTTR mediante dashboards y alarmas proactivas.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="py-24 bg-dark-800 relative z-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Certifications -->
+                <div class="reveal-left">
+                    <div class="inline-flex items-center gap-2 mb-8 text-accent-aws font-mono text-sm uppercase tracking-wider">
+                        <span class="w-8 h-[1px] bg-accent-aws"></span>
+                        Credenciales
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-8">Certificaciones Oficiales</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Cert 1 -->
+                        <div class="group relative bg-dark-700/50 p-6 rounded-2xl border border-white/5 hover:border-accent-aws/50 transition-all overflow-hidden flex items-center gap-6">
+                            <div class="absolute right-0 top-0 w-32 h-32 bg-accent-aws/10 rounded-full blur-2xl group-hover:bg-accent-aws/20 transition-colors"></div>
+                            
+                            <!-- Replace with actual badge image if available -->
+                            <div class="w-20 h-20 bg-dark-900 rounded-xl border border-white/10 flex items-center justify-center flex-shrink-0 z-10">
+                                <i class="fa-brands fa-aws text-4xl text-accent-aws group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            
+                            <div class="z-10">
+                                <h3 class="text-xl font-bold text-white">AWS Certified Solutions Architect</h3>
+                                <p class="text-accent-aws text-sm font-medium mb-2">Associate Level</p>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white/5 text-gray-400 text-xs font-mono">
+                                    <i class="fa-regular fa-calendar-check"></i> Expedición: 2025
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Cert 2 -->
+                        <div class="group relative bg-dark-700/50 p-6 rounded-2xl border border-white/5 hover:border-accent-terraform/50 transition-all overflow-hidden flex items-center gap-6">
+                            <div class="absolute right-0 top-0 w-32 h-32 bg-accent-terraform/10 rounded-full blur-2xl group-hover:bg-accent-terraform/20 transition-colors"></div>
+                            
+                            <div class="w-20 h-20 bg-dark-900 rounded-xl border border-white/10 flex items-center justify-center flex-shrink-0 z-10">
+                                <i class="fa-solid fa-cloud text-4xl text-accent-terraform group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            
+                            <div class="z-10">
+                                <h3 class="text-xl font-bold text-white">HashiCorp Certified: Terraform</h3>
+                                <p class="text-accent-terraform text-sm font-medium mb-2">Associate Level</p>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white/5 text-gray-400 text-xs font-mono">
+                                    <i class="fa-regular fa-calendar-check"></i> Expedición: 2024
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Languages -->
+                <div class="space-y-12 reveal-right">
+                    
+                    <div>
+                        <div class="inline-flex items-center gap-2 mb-8 text-white font-mono text-sm uppercase tracking-wider">
+                            <span class="w-8 h-[1px] bg-white/30"></span>
+                            Formación Académica
+                        </div>
+                        
+                        <div class="relative pl-8 border-l border-white/10">
+                            <div class="absolute w-4 h-4 bg-dark-800 border-2 border-accent-primary rounded-full -left-[8.5px] top-1"></div>
+                            <h3 class="text-2xl font-bold text-white">Ingeniería en Sistemas e Informática</h3>
+                            <p class="text-gray-400 text-lg mt-1">Universidad de las Fuerzas Armadas ESPE</p>
+                            <p class="text-accent-primary font-mono text-sm mt-2">2017 – 2021</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="inline-flex items-center gap-2 mb-8 text-white font-mono text-sm uppercase tracking-wider">
+                            <span class="w-8 h-[1px] bg-white/30"></span>
+                            Idiomas
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-dark-700/50 border border-white/5 p-5 rounded-2xl flex flex-col items-center justify-center text-center hover:bg-dark-700 transition-colors">
+                                <span class="text-3xl mb-2">🇪🇸</span>
+                                <h4 class="text-white font-bold mb-1">Español</h4>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400">Nativo</span>
+                            </div>
+                            <div class="bg-dark-700/50 border border-white/5 p-5 rounded-2xl flex flex-col items-center justify-center text-center hover:bg-dark-700 transition-colors">
+                                <span class="text-3xl mb-2">🇺🇸</span>
+                                <h4 class="text-white font-bold mb-1">Inglés</h4>
+                                <span class="px-3 py-1 bg-accent-primary/20 text-accent-primary rounded-full text-xs font-bold">Profesional (C1)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gradient-to-b from-dark-900 to-black relative z-10 border-t border-white/5 text-center">
+        <div class="max-w-3xl mx-auto px-4 reveal-scale">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">¿Listo para escalar tu infraestructura?</h2>
+            <p class="text-gray-400 mb-10 text-lg">Estoy abierto a nuevas oportunidades y desafíos técnicos. Conversemos sobre cómo la automatización y la nube pueden potenciar tus operaciones.</p>
+            
+            <a href="mailto:devangelqc@gmail.com" class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-bold text-lg hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:scale-105 transition-all duration-300">
+                <i class="fa-regular fa-paper-plane"></i> Escríbeme un correo
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-black py-8 border-t border-white/5 z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white text-[10px]">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <span class="text-white font-bold">Angel.dev</span>
+            </div>
+            
+            <div class="text-gray-500 text-sm font-mono text-center md:text-left">
+                &copy; <span id="year"></span> Angel Quintero. Diseñado y codificado con <i class="fa-solid fa-heart text-accent-tertiary mx-1"></i>.
+            </div>
+            
+            <div class="flex space-x-4">
+                <a href="https://github.com/devangels29" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                    <span class="sr-only">GitHub</span>
+                    <i class="fa-brands fa-github text-lg"></i>
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#0a66c2] hover:bg-white/10 transition-colors">
+                    <span class="sr-only">LinkedIn</span>
+                    <i class="fa-brands fa-linkedin-in text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>

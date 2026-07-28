@@ -60,7 +60,7 @@ Hello, I'm **Angel Quintero**. I specialize in transforming manual operations in
 ### 📬 Contact & Links
 * **Email:** [devangelqc@gmail.com](mailto:devangelqc@gmail.com)
 * **GitHub:** [@devangels29](https://github.com/devangels29)
-* **LinkedIn:** [Angel Quintero](https://linkedin.com) *(Update with your direct link)*
+* **LinkedIn:** [Angel Quintero]([https://linkedin.com](https://www.linkedin.com/in/angel-quintero-68baa6424/))
 
 </details>
 
